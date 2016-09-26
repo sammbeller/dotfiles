@@ -34,9 +34,9 @@ bind up:shift;alt    nudge +0   -10%
 bind down:shift;alt  nudge +0   +10%
 
 # Throw Bindings
-bind 1:ctrl;alt         throw 0 resize
-bind 2:ctrl;alt         throw 1 resize
-bind 3:ctrl;alt         throw 2 resize
+bind 1:cmd;ctrl         throw 0 resize
+bind 2:cmd;ctrl         throw 1 resize
+bind 3:cmd;ctrl         throw 2 resize
 bind right:ctrl;alt;cmd throw right resize
 bind left:ctrl;alt;cmd  throw left  resize
 bind up:ctrl;alt;cmd    throw up    resize
@@ -47,7 +47,7 @@ bind down:ctrl;alt;cmd  throw down  resize
 #bind left:cmd     focus left
 #bind up:cmd       focus up
 #bind down:cmd     focus down
-bind up:cmd;alt   focus behind
+bind up:cmd;alt   focus above
 bind down:cmd;alt focus behind
 
 # Full Screen
