@@ -36,11 +36,6 @@ syntax on
 " pathogen https://github.com/tpope/vim-pathogen
 execute pathogen#infect()
 
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-
-
 " Return to last edit position when opening files (You want this!)
 " autocmd BufReadPost *
 "      \ if line("'\"") > 0 && line("'\"") <= line("$") |
