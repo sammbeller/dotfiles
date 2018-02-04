@@ -33,6 +33,9 @@ nnoremap <silent><C-}> <C-w><C-]><C-w>T
 
 syntax on
 
+" Set fold method
+set foldmethod=syntax
+
 " pathogen https://github.com/tpope/vim-pathogen
 execute pathogen#infect()
 
@@ -60,3 +63,6 @@ nmap G Gzz
 
 " Vimwiki settings
 let g:vimwiki_list = [{'path': '/Users/sbeller/Documents/vimwiki'}]
+
+" Tagbar settings
+nmap <F8> :TagbarToggle<CR>
