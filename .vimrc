@@ -56,3 +56,7 @@ let g:ctrlp_custom_ignore = {
 nmap n nzz
 nmap N Nzz
 nmap G Gzz
+
+
+" Vimwiki settings
+let g:vimwiki_list = [{'path': '/Users/sbeller/Documents/vimwiki'}]
