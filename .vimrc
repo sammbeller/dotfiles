@@ -54,15 +54,25 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 
+let g:ctrlp_max_files=100000
 
 " Center screen on line
 nmap n nzz
 nmap N Nzz
 nmap G Gzz
 
+" Get backspace key to work
+set backspace=indent,eol,start
 
 " Vimwiki settings
 let g:vimwiki_list = [{'path': '/Users/sbeller/Documents/vimwiki'}]
 
 " Tagbar settings
 nmap <F8> :TagbarToggle<CR>
+
+" Use arrow keys to navigate windows
+nnoremap <silent> <C-Up> <C-w>k
+nnoremap <silent> <C-Left> <C-w>h
+nnoremap <silent> <C-Down> <C-w>j
+nnoremap <silent> <C-Right> <C-w>l
+
