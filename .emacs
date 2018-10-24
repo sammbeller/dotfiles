@@ -8,15 +8,16 @@
  '(backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
  '(css-indent-offset 2)
  '(global-company-mode t)
+ '(initial-buffer-choice (lambda nil (org-journal-new-entry t)))
  '(js-indent-level 2)
  '(org-default-notes-file "~/Documents/org/notes.org")
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+    (exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
  '(projectile-mode t nil (projectile))
  '(typescript-auto-indent-flag nil)
- '(typescript-indent-level 2))
+ '(typescript-indent-level 2 t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -104,3 +105,7 @@
   (local-set-key (kbd "C-c f") 'gofmt)
   )
 (add-hook 'go-mode-hook 'setup-go-mode)
+
+;; Correctly set exec path on macos
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
