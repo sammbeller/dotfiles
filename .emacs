@@ -38,7 +38,7 @@
 ;; Global Set Keys - Put them here to avoid collisions
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
-;; Reserc C-c f for formatting
+;; Reserve C-c f for formatting
 (global-set-key (kbd "C-c g") 'deadgrep)
 ;; Org-journal, prefix with C-u to jump to today's file without creating new entry
 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
@@ -60,11 +60,13 @@
 ;; go-mode
 ;; Additionally, installing github.com/rogpeppe/godef is useful
 (defun setup-go-mode ()
+  ;; Local set Keys
   (local-set-key (kbd "C-c f") 'gofmt)
   )
 (add-hook 'go-mode-hook 'setup-go-mode)
 ;; python-mode configuration
 (defun setup-python-mode ()
+  ;; Local set Keys
   (local-set-key (kbd "C-c f") 'blacken-buffer)
   )
 (add-hook 'python-mode-hook'setup-python-mode)
