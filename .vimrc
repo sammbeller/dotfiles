@@ -65,8 +65,10 @@ nmap G Gzz
 set backspace=indent,eol,start
 
 " Vimwiki settings
-let g:vimwiki_list = [{'path': '/Users/sbeller/Documents/vimwiki'},
-                     \ {'path': '/Users/sbeller/Documents/vimwiki-markdown', 'auto_toc': 1, 'syntax': 'markdown', 'ext': '.md'}]
+"let g:vimwiki_list = [{'path': '/Users/sbeller/Documents/vimwiki'},
+"                     \ {'path': '/Users/sbeller/Documents/vimwiki-markdown', 'auto_toc': 1, 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [{'path': '/home/sbeller/Documents/vimwiki'},
+                     \ {'path': '/home/sbeller/Documents/vimwiki-markdown', 'auto_toc': 1, 'syntax': 'markdown', 'ext': '.md'}]
 
 " Tagbar settings
 nmap <F8> :TagbarToggle<CR>
