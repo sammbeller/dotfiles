@@ -9,14 +9,15 @@
  '(blacken-line-length 80)
  '(css-indent-offset 2)
  '(global-company-mode t)
- '(initial-buffer-choice (lambda nil (org-journal-new-entry t)))
  '(js-indent-level 2)
  '(org-default-notes-file "~/Documents/org/notes.org")
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+    (magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
  '(projectile-mode t nil (projectile))
+ '(show-paren-delay 0)
+ '(show-paren-mode t)
  '(typescript-auto-indent-flag nil)
  '(typescript-indent-level 2))
 (custom-set-faces
@@ -42,6 +43,8 @@
 (global-set-key (kbd "C-c g") 'deadgrep)
 ;; Org-journal, prefix with C-u to jump to today's file without creating new entry
 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
+;; Reserve C-c l for linting
+(global-set-key (kbd "C-c s") 'magit-status)
 
 ;; Set multi-line move on M-up, M-down
 (global-set-key (kbd "M-<up>")
@@ -72,12 +75,15 @@
 (add-hook 'python-mode-hook'setup-python-mode)
 
 ;; Org-mode stuff
+;; Include diary file in org agenda
+(setq org-agenda-include-diary t)
 (setq org-log-done t) ;; Is this working?
 ;; Files to be scanned for agenda
-(setq org-agenda-files (list "~/Documents/org/shoobx.org"
-			     "~/Documents/org/intafel.org"
+(setq org-agenda-files (list "~/Documents/org/intafel.org"
 			     "~/Documents/org/journal"
-			     "~/Documents/org/life.org"))
+			     "~/Documents/org/life.org"
+			     "~/Documents/org/classes/fast.ai.org"
+			     "~/Documents/org/classes/fast-linear-algebra.org"))
 ;; org-journal
 (setq org-journal-dir "~/Documents/org/journal")
 
@@ -90,11 +96,11 @@
 ;; jedi
 ;; Start Jedi in Python mode
 ;; Disable this for now to try plain company mode
-;;(add-hook 'python-mode-hook 'jedi:setup)
+;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; Start jedi autocomplete when doing dot references
-;;(setq jedi:complete-on-dot t)
+;; (setq jedi:complete-on-dot t)
 ;; This leverages company-jedi
-;;(add-to-list `company-backends `company-jedi)
+;; (add-to-list `company-backends `company-jedi)
 
 ;; Projectile
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -114,24 +120,45 @@
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
+  (local-set-key (kbd "C-c f") 'tide-format)
+
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
-
 (setq tide-format-options
       '(:insertSpaceAfterCommaDelimiter t)
 )
-
-
 ;; Correctly set exec path on macos
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
-
-
 ;; Miscellaneous modes
 ;; Line and column numbers
 (setq column-number-mode t)
 (setq lin-number-mode t)
 ;; Show matching parenthesis mode
-(setq show-paren-delay 0)
-(setq show-paren-mode t)
+;; (setq show-paren-delay 0)
 
+;; Elpy config
+(elpy-enable)
+;; Use Flycheck for syntax checking
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; Enable narrowing
+(put 'narrow-to-defun  'disabled nil)
+(put 'narrow-to-page   'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+
+;; Use node_modules as a source for executables for flycheck
+;; https://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun use-tslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (tslint
+          (and root
+               (expand-file-name "node_modules/.bin/tslint"
+                                 root))))
+    (when (and tslint (file-executable-p tslint))
+      (setq-local flycheck-typescript-tslint-executable tslint))))
+
+(add-hook 'flycheck-mode-hook #'use-tslint-from-node-modules)
