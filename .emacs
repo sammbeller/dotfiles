@@ -14,12 +14,12 @@
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+    (rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
  '(projectile-mode t nil (projectile))
  '(show-paren-delay 0)
  '(show-paren-mode t)
  '(typescript-auto-indent-flag nil)
- '(typescript-indent-level 2))
+ '(typescript-indent-level 2 t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -125,7 +125,10 @@
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 (setq tide-format-options
-      '(:insertSpaceAfterCommaDelimiter t)
+      '(:convertTabsToSpace t
+			    :indentSize 2
+			    :insertSpaceAfterCommaDelimiter t
+			    :tabSize 2)
 )
 ;; Correctly set exec path on macos
 (when (memq window-system '(mac ns x))
