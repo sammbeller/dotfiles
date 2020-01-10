@@ -44,6 +44,7 @@
 ;; Org-journal, prefix with C-u to jump to today's file without creating new entry
 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
 ;; Reserve C-c l for linting
+;; Reserve C-c r for finding references
 (global-set-key (kbd "C-c s") 'magit-status)
 
 ;; Set multi-line move on M-up, M-down
@@ -121,7 +122,7 @@
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (local-set-key (kbd "C-c f") 'tide-format)
-
+  (local-set-key (kbd "C-c r") `tide-references)
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 (setq tide-format-options
