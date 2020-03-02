@@ -32,7 +32,11 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 ;; Requires
 (require 'blacken)
+;; Needed for flycheck-add-mode
+(require 'flycheck)
 (require 'package)
+;; For setting up web-mode
+(require 'web-mode)
 ;; MELPA
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
