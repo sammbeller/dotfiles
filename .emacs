@@ -14,12 +14,12 @@
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+    (web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
  '(projectile-mode t nil (projectile))
  '(show-paren-delay 0)
  '(show-paren-mode t)
  '(typescript-auto-indent-flag nil)
- '(typescript-indent-level 2 t))
+ '(typescript-indent-level 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -130,7 +130,15 @@
 			    :indentSize 2
 			    :insertSpaceAfterCommaDelimiter t
 			    :tabSize 2)
-)
+      )
+;; For tsx support
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; enable typescript-tslint checker
+(flycheck-add-mode 'typescript-tslint 'web-mode)
+
 ;; Correctly set exec path on macos
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
@@ -166,3 +174,7 @@
       (setq-local flycheck-typescript-tslint-executable tslint))))
 
 (add-hook 'flycheck-mode-hook #'use-tslint-from-node-modules)
+
+;; web-mode
+;; Enable web-mode for tsx files
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
