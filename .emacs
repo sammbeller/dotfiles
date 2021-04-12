@@ -5,21 +5,38 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
  '(blacken-line-length 80)
  '(css-indent-offset 2)
+ '(custom-enabled-themes (quote (manoj-dark)))
  '(global-company-mode t)
+ '(indent-tabs-mode nil)
  '(js-indent-level 2)
+ '(js-switch-indent-offset 2)
  '(org-default-notes-file "~/Documents/org/notes.org")
  '(org-startup-truncated nil)
+ '(package-archive-priorities (quote (("melpa-stable" . 2) ("gnu" . 1) ("melpa" . 0))))
+ '(package-archives
+   (quote
+    (("gnu" . "https://elpa.gnu.org/packages/")
+     ("melpa-stable" . "https://stable.melpa.org/packages/")
+     ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+    (prettier-js markdown-mode geiser emojify rjsx-mode web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
  '(projectile-mode t nil (projectile))
  '(show-paren-delay 0)
  '(show-paren-mode t)
  '(typescript-auto-indent-flag nil)
- '(typescript-indent-level 2))
+ '(typescript-indent-level 2)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-enable-auto-quoting nil)
+ '(web-mode-markup-indent-offset 2)
+ '(web-mode-tests-directory "~/tests/"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,9 +54,6 @@
 (require 'package)
 ;; For setting up web-mode
 (require 'web-mode)
-;; MELPA
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;; Global Set Keys - Put them here to avoid collisions
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -179,6 +193,31 @@
 
 (add-hook 'flycheck-mode-hook #'use-tslint-from-node-modules)
 
+;; rjsx/rjsx mode
+;; Enable mode for js files under components dir
+(add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
+(add-hook 'rjsx-mode #'(lambda () (if (buffer-file-name)
+                                      (if (or (string-match "\.jsx$" buffer-file-name)
+                                              (string-match "\.js$" buffer-file-name))
+                                          (funcall prettier-js-mode)))))
+
 ;; web-mode
 ;; Enable web-mode for tsx files
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+
+;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "New name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
