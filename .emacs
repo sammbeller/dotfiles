@@ -28,12 +28,12 @@
      ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (prettier-js markdown-mode geiser emojify rjsx-mode web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+    (yasnippet prettier-js markdown-mode geiser emojify rjsx-mode web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
  '(projectile-mode t nil (projectile))
  '(show-paren-delay 0)
  '(show-paren-mode t)
  '(typescript-auto-indent-flag nil)
- '(typescript-indent-level 2 t)
+ '(typescript-indent-level 2)
  '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-quoting nil)
  '(web-mode-markup-indent-offset 2)
