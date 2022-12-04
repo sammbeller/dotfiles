@@ -9,10 +9,10 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
+ '(backup-directory-alist '((".*" . "~/.emacs_backups/")))
  '(blacken-line-length 80)
  '(css-indent-offset 2)
- '(custom-enabled-themes (quote (manoj-dark)))
+ '(custom-enabled-themes '(manoj-dark))
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(indent-tabs-mode nil)
@@ -20,20 +20,20 @@
  '(js-switch-indent-offset 2)
  '(org-default-notes-file "~/Documents/org/notes.org")
  '(org-startup-truncated nil)
- '(package-archive-priorities (quote (("melpa-stable" . 2) ("gnu" . 1) ("melpa" . 0))))
+ '(package-archive-priorities '(("melpa-stable" . 2) ("gnu" . 1) ("melpa" . 0)))
  '(package-archives
-   (quote
-    (("gnu" . "https://elpa.gnu.org/packages/")
+   '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa-stable" . "https://stable.melpa.org/packages/")
-     ("melpa" . "https://melpa.org/packages/"))))
+     ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   (quote
-    (yasnippet prettier-js markdown-mode geiser emojify rjsx-mode web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org)))
+   '(lsp-mode ivy yasnippet prettier-js markdown-mode geiser emojify rjsx-mode web-mode rust-mode magit elpy auctex exec-path-from-shell deadgrep company-jedi tide typescript-mode projectile git-timemachine find-file-in-repository jedi org-journal go-mode ## python org))
+ '(projectile-completion-system 'ivy)
  '(projectile-mode t nil (projectile))
  '(show-paren-delay 0)
  '(show-paren-mode t)
  '(typescript-auto-indent-flag nil)
  '(typescript-indent-level 2)
+ '(typescript-indent-switch-clauses t)
  '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-quoting nil)
  '(web-mode-markup-indent-offset 2)
@@ -52,6 +52,8 @@
 (require 'blacken)
 ;; Needed for flycheck-add-mode
 (require 'flycheck)
+;; Needed for using gopls language server in go-mode
+(require 'lsp-mode)
 (require 'package)
 ;; For setting up web-mode
 (require 'web-mode)
@@ -82,9 +84,17 @@
 ;; Mode setups
 ;; go-mode
 ;; Additionally, installing github.com/rogpeppe/godef is useful
+
+;; Use gopls language server https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
+(add-hook 'go-mode-hook #'lsp-deferred)
+
 (defun setup-go-mode ()
   ;; Local set Keys
   (local-set-key (kbd "C-c f") 'gofmt)
+  ;; Set up language server support
+  (lsp-register-custom-settings
+   '(("gopls.completeUnimported" t t)
+     ("gopls.staticcheck" t t)))
   )
 (add-hook 'go-mode-hook 'setup-go-mode)
 ;; python-mode configuration
